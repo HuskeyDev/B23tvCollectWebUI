@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css">
+    <script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <title>B23tvCollect Project</title>
+    <link rel="stylesheet" href="/style/common.css">
+</head>
+<style>
+    .main-title {
+        font-size: 3em;
+        line-height: 1;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .button-container {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .button-container mdui-button {
+        min-width: 150px;
+    }
+
+    .card-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+        gap: 24px;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 16px;
+    }
+
+    .card-container mdui-card {
+        padding: 24px;
+        text-align: center;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        min-width: 150px;
+    }
+
+    .card-container mdui-card h1 {
+        font-size: 0.95rem;
+        line-height: 1.4;
+        font-weight: 500;
+        margin: 0 0 16px 0;
+        color: rgba(0, 0, 0, 0.6);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .card-container mdui-card h2 {
+        font-size: 2.5rem;
+        line-height: 1;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    /* barba 过渡动画 */
+    .barba-leave-active {
+        transition: opacity 0.4s ease;
+    }
+
+    .barba-leave {
+        opacity: 0;
+    }
+
+    .barba-enter-active {
+        transition: opacity 0.4s ease;
+    }
+
+    .barba-enter {
+        opacity: 0;
+    }
+</style>
+
+<body>
+    <mdui-top-app-bar scroll-behavior="shrink elevate">
+        <mdui-top-app-bar-title>B23tvCollect Project</mdui-top-app-bar-title>
+        <div style="flex-grow: 1"></div>
+        <div class="wide-only">
+            <mdui-button variant="text">关于</mdui-button>
+        </div>
+        <!--github按钮-->
+        <!--大屏幕显示文字按钮-->
+        <mdui-button class="wide-only" variant="outlined" href="https://github.com" target="_blank"><mdui-icon
+                slot="icon" src="/assets/images/GitHub_Invertocat_Black.svg"></mdui-icon>View On Github</mdui-button>
+        <!--小屏幕仅显示图标-->
+        <mdui-button-icon class="narrow-only" href="https://github.com" target="_blank">
+            <mdui-icon src="/assets/images/GitHub_Invertocat_Black.svg"></mdui-icon>
+        </mdui-button-icon>
+    </mdui-top-app-bar>
+
+    <div data-barba="wrapper">
+        <main class="main" data-barba="container" data-barba-namespace="home">
+            <section style="text-align: center;"><!--顶部查询框-->
+                <mdui-text-field id="hero-input" label="请输入B23tv短链接" style="max-width: 70%" icon="search"
+                    helper="例:https://b23.tv/XxABc" variant="outlined" clearable>
+                    <mdui-button-icon slot="end-icon" icon="arrow_forward"></mdui-button-icon>
+                </mdui-text-field>
+            </section>
+            <section><!--头-->
+                <div style="text-align: center;"><!--标题-->
+                    <span>
+                        <h1 class="main-title">B23tvCollect Project</h1>
+                        <h2>尽可能将更多B站短链从失效中拯救</h2>
+                    </span>
+                </div>
+                <div class="button-container" style="text-align: center;"><!--按钮-->
+                    <mdui-button>安装插件</mdui-button>
+                    <mdui-button href="/main">手动查询/提交</mdui-button>
+                    <mdui-button>API接入文档</mdui-button>
+                </div>
+            </section>
+            <section><!--数据展示卡片-->
+                <div class="card-container" style="text-align: center;">
+                    <mdui-card>
+                        <h1>已收录链接数</h1>
+                        <h2>10000</h2>
+                    </mdui-card>
+                    <mdui-card>
+                        <h1>总查询次数</h1>
+                        <h2>10000</h2>
+                    </mdui-card>
+
+                </div>
+            </section>
+            <mdui-divider></mdui-divider>
+            <section>
+
+                <div style="text-align: center;">
+                    <span>
+                        <h1>介绍</h1>
+                    </span>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css">
+    <script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="https://unpkg.com/@barba/core"></script>
+    <title>B23tvCollect Project</title>
+    <link rel="stylesheet" href="/style/common.css">
+</head>
+<style>
+    /* 幽灵输入框 */
+    .ghost-input {
+        position: fixed;
+        z-index: 9999;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        pointer-events: none;
+    }
+
+    .loading-dialog {
+        h1 {
+            font-size: 0.95rem;
+        }
+
+        text-align: center;
+    }
+
+    .search-result-container {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .search-result-card {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: 16px;
+
+        .search-result-title {
+            margin: 0;
+            font-size: 25px;
+        }
+
+        .item {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 4px;
+
+            .item-head {
+                font-weight: bold;
+                margin: 0px;
+            }
+
+            .item-content {
+                margin: 0px;
+            }
+        }
+    }
+</style>
+
+<body>
+    <mdui-top-app-bar scroll-behavior="shrink elevate">
+        <mdui-top-app-bar-title>B23tvCollect Project</mdui-top-app-bar-title>
+        <div style="flex-grow: 1"></div>
+        <div class="wide-only">
+            <mdui-button variant="text">关于</mdui-button>
+        </div>
+        <!--github按钮-->
+        <!--大屏幕显示文字按钮-->
+        <mdui-button class="wide-only" variant="outlined" href="https://github.com"><mdui-icon slot="icon"
+                src="/assets/images/GitHub_Invertocat_Black.svg"></mdui-icon>View On Github</mdui-button>
+        <!--小屏幕仅显示图标-->
+        <mdui-button-icon class="narrow-only" href="https://github.com">
+            <mdui-icon src="/assets/images/GitHub_Invertocat_Black.svg"></mdui-icon>
+        </mdui-button-icon>
+    </mdui-top-app-bar>
+
+    <div data-barba="wrapper">
+        <mdui-dialog id="info-dialog" class="info-dialog" close-on-overlay-click>
+            <mdui-button slot="action" id="info-dialog-confirm">确定</mdui-button>
+        </mdui-dialog><!--通用信息弹窗-->
+        <mdui-dialog id="loading-dialog" class="loading-dialog"><!--加载中弹窗-->
+            <img src="/assets/images/Loading.gif" alt="loading" style="width: 128px; height: 128px;">
+            <h1>少女祈祷中...</h1>
+        </mdui-dialog>
+        <mdui-snackbar id="top-snackbar" placement="top"></mdui-snackbar>
+        <main class="main" data-barba="container" data-barba-namespace="search">
+            <section>
+                <mdui-tabs value="search" placement="top" full-width>
+                    <mdui-tab icon="search" value="search">查询</mdui-tab>
+                    <mdui-tab icon="upload" value="upload">提交</mdui-tab>
+
+                    <mdui-tab-panel slot="panel" value="search">
+                        <div class="tab-panel">
+                            <mdui-text-field id="search-input" label="请输入B23tv短链接" helper="例:https://b23.tv/XxABc"
+                                variant="outlined" clearable></mdui-text-field>
+                            <mdui-button id="search-submit">查询</mdui-button>
+                            <div id="search-result" style="display: none;">
+                                <mdui-divider></mdui-divider>
+                                <h1 id="search-result-title"></h1>
+                                <div id="search-result-container" class="search-result-container">
+                                    <div  id="result-empty-image" style="display: none; text-align: center;">
+                                    <img src="/assets/images/empty.png" style="height: 256px; width: 256px"></img>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mdui-tab-panel>
+                    <mdui-tab-panel slot="panel" value="upload">
+                        <div class="tab-panel">
+                            <mdui-text-field id="upload-input-b23" label="请输入B23tv短链接" helper="例:https://b23.tv/XxABc"
+                                variant="outlined" clearable></mdui-text-field>
+                            <div style="display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap;">
+                                <mdui-select id="upload-select-type" label="请选择目标类型" variant="outlined" value="1"
+                                    style="max-width: 150px; flex: 1 1 150px;">
+                                    <mdui-menu-item value="1">视频</mdui-menu-item>
+                                    <mdui-menu-item value="2">影视</mdui-menu-item>
+                                    <mdui-menu-item value="3">直播</mdui-menu-item>
+                                    <mdui-menu-item value="4">图文</mdui-menu-item>
+                                    <mdui-menu-item value="5">用户空间</mdui-menu-item>
+                                    <mdui-menu-item value="6">文集</mdui-menu-item>
+                                    <mdui-menu-item value="0">其他</mdui-menu-item>
+                                </mdui-select>
+                                <mdui-text-field id="upload-input-target" label="请输入目标链接"
+                                    helper="例:https://www.bilibili.com/video/BV1GJ411x7h7" variant="outlined" clearable
+                                    style="flex: 1 1 200px;"></mdui-text-field>
+                            </div>
+                            <mdui-button id="upload-submit">提交</mdui-button>
+                        </div>
+                    </mdui-tab-panel>
+                </mdui-tabs>
+            </section>
+        </main>
+    </div>
+    <template id="search-result-card-template">
+        <mdui-card class="search-result-card">
+            <h1 class="search-result-title" id="search-result-title"></h1>
+            <div class="item">
+                <p class="item-head">记录ID</p>
+                <p class="item-content" id="id"></p>
+            </div>
+            <div class="item">
+                <p class="item-head">类型</p>
+                <p class="item-content" id="type"></p>
+            </div>
+            <div class="item">
+                <p class="item-head">目标</p>
+                <a class="item-content" id="target" target="_blank"></a>
+            </div>
+            <div class="item">
+                <p class="item-head">记录提交时间</p>
+                <p class="item-content" id="submit-time"></p>
+            </div>
+
+        </mdui-card>
+    </template>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>
