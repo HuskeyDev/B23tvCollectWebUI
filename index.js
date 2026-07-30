@@ -2,7 +2,7 @@
 function handleHeroSubmit() {
     const input = document.querySelector('#hero-input');
     if (input && input.value) {
-        window.location.href = '/main/?action=search&q=' + encodeURIComponent(input.value);
+        window.location.href = './main/?action=search&q=' + encodeURIComponent(input.value);
     }
 }
 
